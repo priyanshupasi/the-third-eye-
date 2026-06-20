@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Third Eye - Accessibility Face Recognizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <!-- Screen reader notification zone -->
+  <div id="sr-announcements" class="sr-only" aria-live="assertive" aria-atomic="true">
+    Third Eye is loading...
+  </div>
+
+  <div class="glass-bg"></div>
+  
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-logo">
+        <div class="eye-icon">👁️‍🗨️</div>
+        <div>
+          <h1>Third Eye</h1>
+          <p class="subtitle">AI Assistant for the Visually Impaired</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <button id="btn-voice-trigger" class="btn btn-secondary" style="border-radius: 50px; padding: 8px 16px; display: flex; align-items: center; gap: 8px; font-weight: 600;" aria-label="Activate Voice Assistant (Shortcut: V)">
+          🎤 Speak Command
+        </button>
+        <div class="status-badge" id="app-status" aria-label="System status: Loading models">
+          <span class="status-dot pulsing-yellow"></span>
+          <span class="status-text">Loading AI Models...</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-content">
+      <!-- Camera Screen (Left Side) -->
+      <section class="camera-card card" aria-labelledby="camera-section-title">
+        <h2 id="camera-section-title" class="sr-only">Camera Feed and Scanner</h2>
+        
+        <div class="video-container" id="video-wrapper">
+          <div class="camera-placeholder" id="placeholder-text">
+            <div class="loader"></div>
+            <p>Initializing Camera feed...</p>
+          </div>
+          <video id="webcam" autoplay muted playsinline aria-label="Live video scanner feed"></video>
+          <canvas id="overlay"></canvas>
+          
+          <div class="scan-overlay" id="scanner-line"></div>
+        </div>
+
+        <div class="camera-controls">
+          <button id="btn-toggle-scan" class="btn btn-primary" aria-label="Start Scanning Mode (Keyboard Shortcut: Space)" disabled>
+            <span class="btn-icon">▶</span> Start Scanning
+          </button>
+          <button id="btn-switch-camera" class="btn btn-secondary" aria-label="Switch Camera (Front/Back)">
+            <span class="btn-icon">🔄</span> Switch Camera
+          </button>
+        </div>
+      </section>
+
+      <!-- Assistant Control Dashboard (Right Side) -->
+      <section class="dashboard-card card" aria-labelledby="dashboard-title">
+        <h2 id="dashboard-title">Assistant Console</h2>
+        
+        <!-- Register Face Section -->
+        <div class="dashboard-section registration-section">
+          <h3>Register New Person</h3>
+          <p class="section-desc">Type their name and capture a face descriptors directly from the camera feed.</p>
+          
+          <form id="register-form" onsubmit="return false;">
+            <div class="input-group">
+              <label for="person-name" class="sr-only">Person's Full Name</label>
+              <input type="text" id="person-name" placeholder="Enter full name (e.g. John Doe)" required autocomplete="off">
+              <button type="submit" id="btn-register" class="btn btn-success" disabled aria-label="Capture and Register Person (Keyboard Shortcut: R)">
+                📸 Capture & Save
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Database List Section -->
+        <div class="dashboard-section database-section">
+          <div class="section-header">
+            <h3>Registered People</h3>
+            <span class="badge" id="db-count">0 Persons</span>
+          </div>
+          <div class="db-list-container">
+            <ul id="db-list" class="db-list">
+              <li class="empty-list-msg">No profiles registered yet. Register some faces to start identifying people.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="dashboard-section settings-section">
+          <h3>Settings & Accessibility</h3>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <label for="speech-rate">Speech Speed</label>
+              <span class="setting-val" id="speech-rate-val">Normal</span>
+            </div>
+            <input type="range" id="speech-rate" min="0.5" max="1.8" step="0.1" value="1.0" aria-valuemin="0.5" aria-valuemax="1.8" aria-valuenow="1.0">
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <label for="match-threshold">Match Sensitivity</label>
+              <span class="setting-val" id="match-threshold-val">Secure (0.45)</span>
+            </div>
+            <input type="range" id="match-threshold" min="0.30" max="0.65" step="0.05" value="0.45" aria-valuemin="0.30" aria-valuemax="0.65" aria-valuenow="0.45" aria-describedby="threshold-desc">
+            <small id="threshold-desc" class="setting-desc">Lower values mean stricter verification (less false matches).</small>
+          </div>
+
+          <div class="shortcuts-guide">
+            <h4>Keyboard Shortcuts (For blind users)</h4>
+            <ul>
+              <li><kbd>Space</kbd> Toggle Scanning Mode On/Off</li>
+              <li><kbd>R</kbd> Quick Capture Face (Focuses input field)</li>
+              <li><kbd>S</kbd> Speak current status & list of detected people</li>
+              <li><kbd>V</kbd> Voice Command (Press V, wait for tone, speak command)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <footer class="app-footer">
+      <p>Designed with accessibility first. Running locally on secure HTTPS.</p>
+    </footer>
+  </div>
+
+  <!-- Main scripts -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

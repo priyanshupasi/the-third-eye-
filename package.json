@@ -1,0 +1,19 @@
+{
+  "name": "third-eye-face-recognition",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "download-models": "node download-models.js"
+  },
+  "dependencies": {
+    "@vladmandic/face-api": "^1.7.12"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-basic-ssl": "^1.1.0",
+    "vite": "^5.1.0"
+  }
+}
